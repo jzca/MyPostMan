@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>No found or Auth </title>
+</head>
+<body>
+    <hgroup>
+        @if (ViewBag.Nf)
+        {
+            <h1>Not found</h1>
+            <h2>The system did not find your request.</h2>
+        }
+        else
+        {
+            <h1>No authorized</h1>
+            <h2>You don't have the permission to visit or request.</h2>
+        }
+    </hgroup>
+</body>
+</html>
