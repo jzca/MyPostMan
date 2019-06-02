@@ -85,27 +85,20 @@
                         </div>
                     </div>
                 </li>
-            }
 
-
-            <li class="nav-item">
-                <a class="nav-link" href="@Url.Action("IndexIndividual", "Cat")">
-                    <i class="fas fa-tasks"></i>
-                    <span>My Projects</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ticketsPages" aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Tickets</span>
-                </a>
-                <div id="ticketsPages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        @*<h6 class="collapse-header">Tickets</h6>*@
-                        <a class="collapse-item" href="@Url.Action("Index", "Ticket")">All Tickets</a>
+                @*<li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#categoryPages" aria-expanded="true" aria-controls="collapsePages">
+                        <i class="fas fa-home"></i>
+                        <span>Category</span>
+                    </a>
+                    <div id="categoryPages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="@Url.Action("IndexHh", "Category")">Index of Household</a>
+                            <a class="collapse-item" href="@Url.Action("Index", "Category")">Index of Category</a>
+                        </div>
                     </div>
-                </div>
-            </li>
+                </li>*@
+            }
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">

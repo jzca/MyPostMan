@@ -137,7 +137,8 @@
     <Compile Include="Models\BindingModel\HouseholdBindingModel.cs" />
     <Compile Include="Models\BindingModel\CreateTranscationBindingModel.cs" />
     <Compile Include="Models\BindingModel\InviteUserBindingModel.cs" />
-    <Compile Include="Models\HasCookieFilter.cs" />
+    <Compile Include="Models\Filter\AuthorizeFilter.cs" />
+    <Compile Include="Models\Filter\NoFoundAuthFilter.cs" />
     <Compile Include="Models\Helper\AppHelper.cs" />
     <Compile Include="Models\HttpActionContext.cs" />
     <Compile Include="Models\LogInData.cs" />
@@ -1891,8 +1892,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
@@ -1910,9 +1909,11 @@
     <Content Include="Views\Shared\NofoundAuth.cshtml" />
     <Content Include="Views\Household\Join.cshtml" />
     <Content Include="Views\Household\ShowUsers.cshtml" />
+    <Content Include="Views\Shared\NofoundAuthGeneral.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\DealRespond\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

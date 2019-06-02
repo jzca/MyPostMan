@@ -19,16 +19,6 @@ namespace MyPostMan.Models.Helper
 
     public class CusUrlHelper
     {
-        //public string Make(string controller, string action)
-        //{
-        //    return $"http://localhost:44333/api/{controller}/{action}";
-
-        //}
-        //public string MakeById(string controller, string action, int id)
-        //{
-
-        //    return $"http://localhost:44333/api/{controller}/{action}/{id}";
-        //}
 
         public string MakeForToken()
         {
@@ -90,10 +80,6 @@ namespace MyPostMan.Models.Helper
 
             return httpClient.PostAsync(url, encodedValues).Result;
 
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    return "WentThrough";
-            //}
         }
 
         public HttpResponseMessage SendGetRequestAuth(List<KeyValuePair<string, string>> parameters, string controller, string action, int? id, string token, CusHttpMethod method)
@@ -125,10 +111,6 @@ namespace MyPostMan.Models.Helper
            
             return httpClient.PostAsync(url, encodedValues).Result;
 
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    return "WentThrough";
-            //}
         }
 
         public string GetToken(List<KeyValuePair<string, string>> parameters, string controller, string action, int? id)
@@ -168,57 +150,6 @@ namespace MyPostMan.Models.Helper
     }
 
 
-    public class ResponseHelper
-    {
-        //public ActionResult IfSusccess(HttpResponseMessage response)
-        //{
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        return RedirectToAction("Index", "Home");
-        //    }
-
-        //    if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-        //    {
-        //        return View("Error");
-        //    }
-
-        //    if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-        //    {
-        //        var data = RequestHelper.ReadResponse(response);
-        //        var erroMsg = JsonConvert.DeserializeObject<BadUrl>(data);
-        //        ModelState.AddModelError("Url", erroMsg.Message);
-        //    }
-
-        //    if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-        //    {
-        //        var data = RequestHelper.ReadResponse(response);
-        //        var erroMsg = JsonConvert.DeserializeObject<MsgModelState>(data);
-        //        erroMsg.ModelState.ToList().ForEach(p =>
-        //        {
-        //            p.Value.ToList().ForEach(b =>
-        //            {
-        //                ModelState.AddModelError($"{p.Key.ToString()}", $"{b}");
-        //            });
-
-        //        });
-        //    }
-        //}
-    }
-
-
 
 
 }
-
-//public string Make(string controller, string action, int? id)
-//{
-//    if (!id.HasValue)
-//    {
-//        return $"http://localhost:44333/api/{controller}/{action}";
-//    }
-//    else
-//    {
-//        return $"http://localhost:44333/api/{controller}/{action}/{id}";
-//    }
-
-//}

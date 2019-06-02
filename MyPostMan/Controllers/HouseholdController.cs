@@ -2,16 +2,19 @@
 using MyPostMan.Models.BindingModel;
 using MyPostMan.Models.ViewModel;
 using MyPostMan.Models.Helper;
+using MyPostMan.Models.Filter;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Net.Http;
+using System.Net;
 
 namespace MyPostMan.Controllers
 {
-    [HasCookieFilter]
+    [AuthorizeFilter]
     public class HouseholdController : Controller
     {
         private readonly RequestHelper RequestHelper;
@@ -36,7 +39,7 @@ namespace MyPostMan.Controllers
                 return View(model);
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            if (response.StatusCode == HttpStatusCode.NotFound)
             {
                 var model = new List<MyHouseholdViewModel>();
 
@@ -77,19 +80,7 @@ namespace MyPostMan.Controllers
                 return RedirectToAction(nameof(HouseholdController.Index));
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-            {
-                var data = RequestHelper.ReadResponse(response);
-                var erroMsg = JsonConvert.DeserializeObject<MsgModelState>(data);
-                erroMsg.ModelState.ToList().ForEach(p =>
-                {
-                    p.Value.ToList().ForEach(b =>
-                    {
-                        ModelState.AddModelError($"{p.Key.ToString()}", $"{b}");
-                    });
-
-                });
-            }
+            DealBadRequest(response);
 
             return View();
 
@@ -115,9 +106,15 @@ namespace MyPostMan.Controllers
                 return View(model);
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            if (response.StatusCode == HttpStatusCode.NotFound)
             {
                 ViewBag.Nf = true;
+                return View("NofoundAuth");
+            }
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                ViewBag.Nf = false;
                 return View("NofoundAuth");
             }
 
@@ -147,36 +144,24 @@ namespace MyPostMan.Controllers
                 return RedirectToAction(nameof(HouseholdController.Index));
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            if (response.StatusCode == HttpStatusCode.InternalServerError)
             {
                 return View("Error");
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            if (response.StatusCode == HttpStatusCode.NotFound)
             {
                 ViewBag.Nf = true;
                 return View("NofoundAuth");
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 ViewBag.Nf = false;
                 return View("NofoundAuth");
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-            {
-                var data = RequestHelper.ReadResponse(response);
-                var erroMsg = JsonConvert.DeserializeObject<MsgModelState>(data);
-                erroMsg.ModelState.ToList().ForEach(p =>
-                {
-                    p.Value.ToList().ForEach(b =>
-                    {
-                        ModelState.AddModelError($"{p.Key.ToString()}", $"{b}");
-                    });
-
-                });
-            }
+            DealBadRequest(response);
 
             return View();
 
@@ -217,31 +202,19 @@ namespace MyPostMan.Controllers
                 return RedirectToAction(nameof(HouseholdController.Index));
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            if (response.StatusCode == HttpStatusCode.NotFound)
             {
                 ViewBag.Nf = true;
                 return View("NofoundAuth");
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 ViewBag.Nf = false;
                 return View("NofoundAuth");
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-            {
-                var data = RequestHelper.ReadResponse(response);
-                var erroMsg = JsonConvert.DeserializeObject<MsgModelState>(data);
-                erroMsg.ModelState.ToList().ForEach(p =>
-                {
-                    p.Value.ToList().ForEach(b =>
-                    {
-                        ModelState.AddModelError($"{p.Key.ToString()}", $"{b}");
-                    });
-
-                });
-            }
+            DealBadRequest(response);
 
             return View();
 
@@ -262,7 +235,7 @@ namespace MyPostMan.Controllers
                 return View(model);
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            if (response.StatusCode == HttpStatusCode.NotFound)
             {
                 var model = new List<HouseholdViewModel>();
 
@@ -287,31 +260,19 @@ namespace MyPostMan.Controllers
                 return RedirectToAction(nameof(HouseholdController.Index));
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            if (response.StatusCode == HttpStatusCode.NotFound)
             {
                 ViewBag.Nf = true;
                 return View("NofoundAuth");
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 ViewBag.Nf = false;
                 return View("NofoundAuth");
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-            {
-                var data = RequestHelper.ReadResponse(response);
-                var erroMsg = JsonConvert.DeserializeObject<MsgModelState>(data);
-                erroMsg.ModelState.ToList().ForEach(p =>
-                {
-                    p.Value.ToList().ForEach(b =>
-                    {
-                        ModelState.AddModelError($"{p.Key.ToString()}", $"{b}");
-                    });
-
-                });
-            }
+            DealBadRequest(response);
 
             return View();
 
@@ -333,13 +294,13 @@ namespace MyPostMan.Controllers
                 return View(model);
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            if (response.StatusCode == HttpStatusCode.NotFound)
             {
                 ViewBag.Nf = true;
                 return View("NofoundAuth");
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 ViewBag.Nf = false;
                 return View("NofoundAuth");
@@ -365,13 +326,13 @@ namespace MyPostMan.Controllers
                 return RedirectToAction(nameof(HouseholdController.Index));
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            if (response.StatusCode == HttpStatusCode.NotFound)
             {
                 ViewBag.Nf = true;
                 return View("NofoundAuth");
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 ViewBag.Nf = false;
                 return View("NofoundAuth");
@@ -395,19 +356,36 @@ namespace MyPostMan.Controllers
                 return RedirectToAction(nameof(HouseholdController.Index));
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            if (response.StatusCode == HttpStatusCode.NotFound)
             {
                 ViewBag.Nf = true;
                 return View("NofoundAuth");
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 ViewBag.Nf = false;
                 return View("NofoundAuth");
             }
 
             return View();
+        }
+
+        private void DealBadRequest(HttpResponseMessage response)
+        {
+            if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var data = RequestHelper.ReadResponse(response);
+                var erroMsg = JsonConvert.DeserializeObject<MsgModelState>(data);
+                erroMsg.ModelState.ToList().ForEach(p =>
+                {
+                    p.Value.ToList().ForEach(b =>
+                    {
+                        ModelState.AddModelError(string.Empty, $"{b}");
+                    });
+
+                });
+            }
         }
 
 

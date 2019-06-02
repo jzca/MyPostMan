@@ -5,9 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace MyPostMan.Models
+namespace MyPostMan.Models.Filter
 {
-    public class HasCookieFilter : ActionFilterAttribute
+    public class AuthorizeFilter : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -23,6 +23,15 @@ namespace MyPostMan.Models
                     { "action", "Login" }
                     });
             }
+            //else
+            //{
+            //    filterContext.Result = new RedirectToRouteResult(
+            //         new RouteValueDictionary
+            //         {
+            //            { "controller", "Home" },
+            //            { "action", "Index" }
+            //         });
+            //}
         }
     }
 }
