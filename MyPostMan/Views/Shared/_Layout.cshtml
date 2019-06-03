@@ -86,7 +86,7 @@
                     </div>
                 </li>
 
-                @*<li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#categoryPages" aria-expanded="true" aria-controls="collapsePages">
                         <i class="fas fa-home"></i>
                         <span>Category</span>
@@ -94,10 +94,21 @@
                     <div id="categoryPages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="@Url.Action("IndexHh", "Category")">Index of Household</a>
-                            <a class="collapse-item" href="@Url.Action("Index", "Category")">Index of Category</a>
+                            @*<a class="collapse-item" href="@Url.Action("Index", "Category")">Created Category</a>*@
                         </div>
                     </div>
-                </li>*@
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#bankAccPages" aria-expanded="true" aria-controls="collapsePages">
+                        <i class="fas fa-home"></i>
+                        <span>Bank Account</span>
+                    </a>
+                    <div id="bankAccPages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="@Url.Action("IndexHh", "BankAccount")">Index of Household</a>
+                        </div>
+                    </div>
+                </li>
             }
 
             <!-- Divider -->

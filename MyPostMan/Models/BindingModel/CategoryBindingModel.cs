@@ -6,12 +6,9 @@ using System.Web;
 
 namespace MyPostMan.Models.BindingModel
 {
-    public class EditBankAccountBindingModel
+    public class CategoryBindingModel
     {
-        [Required]
         public string Name { get; set; }
-        [Required]
         public string Description { get; set; }
     }
-
 }

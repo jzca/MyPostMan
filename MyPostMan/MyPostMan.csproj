@@ -121,6 +121,9 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\TransactionController.cs" />
+    <Compile Include="Controllers\BankAccountController.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HouseholdController.cs" />
     <Compile Include="Global.asax.cs">
@@ -129,11 +132,9 @@
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\BadError.cs" />
     <Compile Include="Models\BadUrl.cs" />
-    <Compile Include="Models\BindingModel\CreateBankAccountBindingModel.cs" />
-    <Compile Include="Models\BindingModel\CreateCategoryBindingModel.cs" />
-    <Compile Include="Models\BindingModel\EditBankAccountBindingModel.cs" />
-    <Compile Include="Models\BindingModel\EditCategoryBindingModel.cs" />
-    <Compile Include="Models\BindingModel\EditTranscationBindingModel.cs" />
+    <Compile Include="Models\BindingModel\CategoryBindingModel.cs" />
+    <Compile Include="Models\BindingModel\BankAccountBindingModel.cs" />
+    <Compile Include="Models\BindingModel\TranscationBindingModel.cs" />
     <Compile Include="Models\BindingModel\HouseholdBindingModel.cs" />
     <Compile Include="Models\BindingModel\CreateTranscationBindingModel.cs" />
     <Compile Include="Models\BindingModel\InviteUserBindingModel.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="Models\ViewModel\HouseholdViewModel.cs" />
     <Compile Include="Models\ViewModel\MyHouseholdViewModel.cs" />
     <Compile Include="Models\ViewModel\ShowUsersViewModel.cs" />
+    <Compile Include="Models\ViewModel\TranscationDetailViewModel.cs" />
     <Compile Include="Models\ViewModel\TranscationViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -1910,10 +1912,22 @@
     <Content Include="Views\Household\Join.cshtml" />
     <Content Include="Views\Household\ShowUsers.cshtml" />
     <Content Include="Views\Shared\NofoundAuthGeneral.cshtml" />
+    <Content Include="Views\Category\IndexHh.cshtml" />
+    <Content Include="Views\Category\ShowMine.cshtml" />
+    <Content Include="Views\Category\ShowAll.cshtml" />
+    <Content Include="Views\Category\Create.cshtml" />
+    <Content Include="Views\Category\Edit.cshtml" />
+    <Content Include="Views\BankAccount\IndexHh.cshtml" />
+    <Content Include="Views\BankAccount\ShowAll.cshtml" />
+    <Content Include="Views\BankAccount\ShowMine.cshtml" />
+    <Content Include="Views\BankAccount\Create.cshtml" />
+    <Content Include="Views\BankAccount\Edit.cshtml" />
+    <Content Include="Views\Transaction\IndexBa.cshtml" />
+    <Content Include="Views\Transaction\ShowMine.cshtml" />
+    <Content Include="Views\Transaction\IndexHh.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\DealRespond\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

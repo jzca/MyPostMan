@@ -6,13 +6,9 @@ using System.Web;
 
 namespace MyPostMan.Models.BindingModel
 {
-    public class CreateBankAccountBindingModel
+    public class BankAccountBindingModel
     {
-        [Required]
-        public int HouseholdId { get; set; }
-        [Required]
         public string Name { get; set; }
-        [Required]
         public string Description { get; set; }
     }
 

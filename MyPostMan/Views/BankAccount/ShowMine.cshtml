@@ -1,0 +1,72 @@
+﻿@model  List<BankAccountViewModel>
+@{
+    ViewBag.Title = "Created Bank Accounts";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+@if (!Model.Any())
+{
+    <div style="margin-top:15px;">
+        <p><strong>There are no bank accounts</strong></p>
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+
+        <table class="table table-striped table-auto-sort">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Hh Id</th>
+                    <th>Balance</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Date Created</th>
+                    <th>Date Updated</th>
+                    <th>Edit</th>
+                    <th>Update Balance</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var record in Model)
+                {
+                <tr>
+                    <td>@record.Id</td>
+                    <td>@record.HouseholdId</td>
+                    <th>$ @record.Balance</th>
+                    <td>@record.Name</td>
+                    <td>@record.Description</td>
+                    <td>@record.DateCreated</td>
+                    <td>@record.DateUpdated</td>
+                    <td>
+                        <a href="@Url.Action("Edit", "BankAccount", new { id = record.Id, hhId=record.HouseholdId })">
+                            <i class="fas fa-fw fa-wrench"></i>
+                        </a>
+                    </td>
+                    <td>
+                        @using (Html.BeginForm("UpdateBalance", "BankAccount", new { id = record.Id, hhId = record.HouseholdId }, FormMethod.Post))
+                        {
+                            <button type="submit" class="btn btn-info btn-sm btn-circle">
+                                <i class="fas fa-sync"></i>
+                            </button>
+                        }
+                    </td>
+                    <td>
+                        @using (Html.BeginForm("Delete", "BankAccount", new { id = record.Id, hhId = record.HouseholdId }, FormMethod.Post))
+                        {
+                            <button type="submit" class="btn btn-danger btn-sm btn-circle">
+                                <i class="far fa-trash-alt"></i>
+                            </button>
+                        }
+                    </td>
+                </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+}

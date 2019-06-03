@@ -18,7 +18,7 @@ namespace MyPostMan.Controllers
     public class HouseholdController : Controller
     {
         private readonly RequestHelper RequestHelper;
-        private string MyToken { get { return Request.Cookies["PostManCookie"].Value; } }
+        private string MyToken { get { return Request.Cookies["PostManCookie"]?.Value; } }
 
         public HouseholdController()
         {
@@ -144,11 +144,6 @@ namespace MyPostMan.Controllers
                 return RedirectToAction(nameof(HouseholdController.Index));
             }
 
-            if (response.StatusCode == HttpStatusCode.InternalServerError)
-            {
-                return View("Error");
-            }
-
             if (response.StatusCode == HttpStatusCode.NotFound)
             {
                 ViewBag.Nf = true;
@@ -195,7 +190,6 @@ namespace MyPostMan.Controllers
             var response = RequestHelper.SendGetRequestAuth(parameters, "Household"
                 , "InviteUserByHhIdEmail", id, MyToken, CusHttpMethod.Post);
 
-            //var data = RequestHelper.ReadResponse(response);
 
             if (response.IsSuccessStatusCode)
             {
@@ -253,8 +247,6 @@ namespace MyPostMan.Controllers
             var response = RequestHelper.SendGetRequestAuth(parameters, "Household"
                 , "JoinHouseholdById", id, MyToken, CusHttpMethod.Post);
 
-            //var data = RequestHelper.ReadResponse(response);
-
             if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction(nameof(HouseholdController.Index));
@@ -280,12 +272,15 @@ namespace MyPostMan.Controllers
         }
 
         [HttpGet]
-        public ActionResult ShowUsers(int id)
+        public ActionResult ShowUsers(int? id)
         {
+            if (!id.HasValue)
+            {
+                return RedirectToAction(nameof(HouseholdController.Index));
+            }
+
             var response = RequestHelper.SendGetRequestAuthGetDel("Household"
                 , "GetUsersByHhId", id, MyToken, CusHttpMethod.Get);
-
-            //var data = RequestHelper.ReadResponse(response);
 
             if (response.IsSuccessStatusCode)
             {
@@ -319,7 +314,6 @@ namespace MyPostMan.Controllers
             var response = RequestHelper.SendGetRequestAuth(parameters, "Household"
                 , "Leave", id, MyToken, CusHttpMethod.Post);
 
-            //var data = RequestHelper.ReadResponse(response);
 
             if (response.IsSuccessStatusCode)
             {
@@ -349,7 +343,6 @@ namespace MyPostMan.Controllers
             var response = RequestHelper.SendGetRequestAuthGetDel("Household"
                 , "Delete", id, MyToken, CusHttpMethod.Delete);
 
-            //var data = RequestHelper.ReadResponse(response);
 
             if (response.IsSuccessStatusCode)
             {

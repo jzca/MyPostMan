@@ -6,11 +6,12 @@ using System.Web;
 
 namespace MyPostMan.Models.BindingModel
 {
-    public class EditCategoryBindingModel
+    public class TranscationBindingModel
     {
-        [Required]
-        public string Name { get; set; }
-        [Required]
+        public string Title { get; set; }
         public string Description { get; set; }
+        public decimal Amount { get; set; }
+        public DateTime DateTransacted { get; set; }
+        public int CategoryId { get; set; }
     }
 }

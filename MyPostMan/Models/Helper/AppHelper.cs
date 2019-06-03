@@ -144,6 +144,13 @@ namespace MyPostMan.Models.Helper
                 return httpClient.DeleteAsync(url).Result;
             }
 
+            if (method == CusHttpMethod.Put)
+            {
+                var parameters = new List<KeyValuePair<string, string>>();
+                var encodedValues = new FormUrlEncodedContent(parameters);
+                return httpClient.PutAsync(url, encodedValues).Result;
+            }
+
             return httpClient.GetAsync(url).Result;
         }
 
