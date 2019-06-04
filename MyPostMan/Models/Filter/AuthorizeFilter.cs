@@ -23,15 +23,6 @@ namespace MyPostMan.Models.Filter
                     { "action", "Login" }
                     });
             }
-            //else
-            //{
-            //    filterContext.Result = new RedirectToRouteResult(
-            //         new RouteValueDictionary
-            //         {
-            //            { "controller", "Home" },
-            //            { "action", "Index" }
-            //         });
-            //}
         }
     }
 }

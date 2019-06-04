@@ -46,7 +46,10 @@ namespace MyPostMan.Controllers
                 return View(model);
             }
 
-            return View();
+
+            return View("Erro");
+
+
         }
 
         [HttpGet]
@@ -96,7 +99,7 @@ namespace MyPostMan.Controllers
             }
 
             var response = RequestHelper.SendGetRequestAuthGetDel("Household"
-            , "GetByUserId", id, MyToken, CusHttpMethod.Get);
+            , "GetOwnedById", id, MyToken, CusHttpMethod.Get);
 
 
             if (response.IsSuccessStatusCode)
@@ -118,7 +121,7 @@ namespace MyPostMan.Controllers
                 return View("NofoundAuth");
             }
 
-            return View();
+            return View("Erro");
         }
 
         [HttpPost]
@@ -236,7 +239,7 @@ namespace MyPostMan.Controllers
                 return View(model);
             }
 
-            return View();
+            return View("Erro");
         }
 
         [HttpPost]
@@ -332,7 +335,7 @@ namespace MyPostMan.Controllers
                 return View("NofoundAuth");
             }
 
-            return View();
+            return View("Erro");
         }
 
 
@@ -361,7 +364,7 @@ namespace MyPostMan.Controllers
                 return View("NofoundAuth");
             }
 
-            return View();
+            return View("Erro");
         }
 
         private void DealBadRequest(HttpResponseMessage response)

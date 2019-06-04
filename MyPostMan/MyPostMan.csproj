@@ -132,11 +132,12 @@
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\BadError.cs" />
     <Compile Include="Models\BadUrl.cs" />
+    <Compile Include="Models\BindingModel\CategoryTranscationBindingModel.cs" />
     <Compile Include="Models\BindingModel\CategoryBindingModel.cs" />
     <Compile Include="Models\BindingModel\BankAccountBindingModel.cs" />
     <Compile Include="Models\BindingModel\TranscationBindingModel.cs" />
     <Compile Include="Models\BindingModel\HouseholdBindingModel.cs" />
-    <Compile Include="Models\BindingModel\CreateTranscationBindingModel.cs" />
+    <Compile Include="Models\BindingModel\DropDownListTranscationBindingModel.cs" />
     <Compile Include="Models\BindingModel\InviteUserBindingModel.cs" />
     <Compile Include="Models\Filter\AuthorizeFilter.cs" />
     <Compile Include="Models\Filter\NoFoundAuthFilter.cs" />
@@ -1925,6 +1926,7 @@
     <Content Include="Views\Transaction\IndexBa.cshtml" />
     <Content Include="Views\Transaction\ShowMine.cshtml" />
     <Content Include="Views\Transaction\IndexHh.cshtml" />
+    <Content Include="Views\Transaction\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

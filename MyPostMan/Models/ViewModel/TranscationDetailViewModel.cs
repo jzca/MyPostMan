@@ -18,5 +18,6 @@ namespace MyPostMan.Models.ViewModel
         public int CategoryId { get; set; }
         public string CreatorId { get; set; }
         public bool IsCreator { get; set; }
+        public bool IsHhOwner { get; set; }
     }
 }

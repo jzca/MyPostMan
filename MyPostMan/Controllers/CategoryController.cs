@@ -169,6 +169,21 @@ namespace MyPostMan.Controllers
                 return RedirectToAction(nameof(CategoryController.ShowMine), new { id });
             }
 
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                ViewBag.Nf = true;
+                return View("NofoundAuth");
+            }
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                ViewBag.Nf = false;
+                return View("NofoundAuth");
+            }
+            else if (response.StatusCode != HttpStatusCode.BadRequest)
+            {
+                return View("Error");
+            }
+
             DealBadRequest(response);
 
             return View();

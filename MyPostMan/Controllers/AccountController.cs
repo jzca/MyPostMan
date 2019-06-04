@@ -56,6 +56,7 @@ namespace MyPostMan.Controllers
 
             if (response.IsSuccessStatusCode)
             {
+                TempData["Messsage"] = "Your account has been created.";
                 return RedirectToAction("Login", "Account");
             }
 
@@ -91,12 +92,12 @@ namespace MyPostMan.Controllers
 
             var userName = formData.Username;
             var password = formData.Password;
-            var grantType = "password";
+            var grant_type = "password";
 
             var parameters = new List<KeyValuePair<string, string>>();
             parameters.Add(new KeyValuePair<string, string>("username", userName));
             parameters.Add(new KeyValuePair<string, string>("password", password));
-            parameters.Add(new KeyValuePair<string, string>("grant_type", grantType));
+            parameters.Add(new KeyValuePair<string, string>("grant_type", grant_type));
 
             var response = RequestHelper.SendGetRequest(parameters, "token"
              , "token", null);
@@ -224,9 +225,14 @@ namespace MyPostMan.Controllers
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
-        public ActionResult ResetPassword()
+        public ActionResult ResetPassword(string code)
         {
-            return View();
+            var model = new ResetPasswordBindingModel()
+            {
+                Code = code
+            };
+
+            return View(model);
         }
 
         //
@@ -316,7 +322,6 @@ namespace MyPostMan.Controllers
                 });
             }
         }
-
 
 
 

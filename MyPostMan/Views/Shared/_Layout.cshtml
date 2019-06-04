@@ -34,7 +34,6 @@
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="@Url.Action("Index", "Home")">
                 <div class="sidebar-brand-icon">
                     <i class="fas fa-user-astronaut"></i>
-                    @*<i class="fas fa-shipping-fast"></i>*@
                 </div>
                 <div class="sidebar-brand-text mx-3">Post Man</div>
             </a>
@@ -51,7 +50,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#accountPages" aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
+                    <i class="fas fa-users-cog"></i>
                     <span>Account</span>
                 </a>
                 <div id="accountPages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
@@ -88,7 +87,7 @@
 
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#categoryPages" aria-expanded="true" aria-controls="collapsePages">
-                        <i class="fas fa-home"></i>
+                        <i class="fas fa-book"></i>
                         <span>Category</span>
                     </a>
                     <div id="categoryPages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
@@ -100,7 +99,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#bankAccPages" aria-expanded="true" aria-controls="collapsePages">
-                        <i class="fas fa-home"></i>
+                        <i class="fas fa-dollar-sign"></i>
                         <span>Bank Account</span>
                     </a>
                     <div id="bankAccPages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
@@ -109,6 +108,19 @@
                         </div>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#transactionPages" aria-expanded="true" aria-controls="collapsePages">
+                        <i class="fas fa-receipt"></i>
+                        <span>Transaction</span>
+                    </a>
+                    <div id="transactionPages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="@Url.Action("IndexBa", "Transaction")">Index of Bank Account</a>
+                            <a class="collapse-item" href="@Url.Action("IndexHh", "Transaction")">Index of Household</a>
+                        </div>
+                    </div>
+                </li>
+
             }
 
             <!-- Divider -->

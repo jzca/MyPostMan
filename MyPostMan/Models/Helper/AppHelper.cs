@@ -146,9 +146,7 @@ namespace MyPostMan.Models.Helper
 
             if (method == CusHttpMethod.Put)
             {
-                var parameters = new List<KeyValuePair<string, string>>();
-                var encodedValues = new FormUrlEncodedContent(parameters);
-                return httpClient.PutAsync(url, encodedValues).Result;
+                return httpClient.PutAsync(url, null).Result;
             }
 
             return httpClient.GetAsync(url).Result;

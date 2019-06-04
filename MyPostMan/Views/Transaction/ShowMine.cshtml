@@ -20,14 +20,14 @@ else
             <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Hh Id</th>
-                    <th>Balance</th>
+                    <th>Amount</th>
                     <th>Name</th>
                     <th>Description</th>
+                    <th>Date Transacted</th>
                     <th>Date Created</th>
                     <th>Date Updated</th>
                     <th>Edit</th>
-                    <th>Update Balance</th>
+                    <th>Void</th>
                     <th>Delete</th>
                 </tr>
             </thead>
@@ -36,33 +36,44 @@ else
                 {
                     <tr>
                         <td>@record.Id</td>
-                        <td>@record.HouseholdId</td>
-                        <th>$ @record.Balance</th>
-                        <td>@record.Name</td>
+                        <th>$ @record.Amount</th>
+                        <td>@record.Title</td>
                         <td>@record.Description</td>
+                        <td>@record.DateTransacted</td>
                         <td>@record.DateCreated</td>
                         <td>@record.DateUpdated</td>
-                        <td>
-                            <a href="@Url.Action("Edit", "BankAccount", new { id = record.Id, hhId=record.HouseholdId })">
-                                <i class="fas fa-fw fa-wrench"></i>
-                            </a>
-                        </td>
-                        <td>
-                            @using (Html.BeginForm("UpdateBalance", "BankAccount", new { id = record.Id, hhId = record.HouseholdId }, FormMethod.Post))
-                            {
-                                <button type="submit" class="btn btn-info btn-sm btn-circle">
-                                    <i class="fas fa-sync"></i>
-                                </button>
-                            }
-                        </td>
-                        <td>
-                            @using (Html.BeginForm("Delete", "BankAccount", new { id = record.Id, hhId = record.HouseholdId }, FormMethod.Post))
-                            {
-                                <button type="submit" class="btn btn-danger btn-sm btn-circle">
-                                    <i class="far fa-trash-alt"></i>
-                                </button>
-                            }
-                        </td>
+
+                        @if (record.IsCreator || record.IsHhOwner)
+                        {
+                            <td>
+                                <a href="@Url.Action("Edit", "Transaction", new { id = record.Id })">
+                                    <i class="fas fa-fw fa-wrench"></i>
+                                </a>
+                            </td>
+                            <td>
+                                @using (Html.BeginForm("Void", "Transaction", new { id = record.Id}, FormMethod.Post))
+                                {
+                                    <button type="submit" class="btn btn-warning btn-sm btn-circle">
+                                        <i class="fas fa-strikethrough"></i>
+                                    </button>
+                                }
+                            </td>
+                            <td>
+                                @using (Html.BeginForm("Delete", "Transaction", new { id = record.Id}, FormMethod.Post))
+                                {
+                                    <button type="submit" class="btn btn-danger btn-sm btn-circle">
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
+                                }
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        }
+
                     </tr>
                 }
 
