@@ -135,6 +135,7 @@
     <Compile Include="Models\BindingModel\CategoryTranscationBindingModel.cs" />
     <Compile Include="Models\BindingModel\CategoryBindingModel.cs" />
     <Compile Include="Models\BindingModel\BankAccountBindingModel.cs" />
+    <Compile Include="Models\BindingModel\EditTranscationBindingModel .cs" />
     <Compile Include="Models\BindingModel\TranscationBindingModel.cs" />
     <Compile Include="Models\BindingModel\HouseholdBindingModel.cs" />
     <Compile Include="Models\BindingModel\DropDownListTranscationBindingModel.cs" />
@@ -158,6 +159,12 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="resources\css\images\ui-icons_444444_256x240.png" />
+    <Content Include="resources\css\images\ui-icons_555555_256x240.png" />
+    <Content Include="resources\css\images\ui-icons_777620_256x240.png" />
+    <Content Include="resources\css\images\ui-icons_777777_256x240.png" />
+    <Content Include="resources\css\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="resources\css\images\ui-icons_ffffff_256x240.png" />
     <Content Include="resources\css\sb-admin-2.css" />
     <Content Include="resources\css\sb-admin-2.min.css" />
     <Content Include="resources\css\Site.css" />
@@ -1736,6 +1743,8 @@
     <Content Include="resources\vendor\jquery-easing\jquery.easing.compatibility.js" />
     <Content Include="resources\vendor\jquery-easing\jquery.easing.js" />
     <Content Include="resources\vendor\jquery-easing\jquery.easing.min.js" />
+    <Content Include="resources\css\jquery-ui.min.css" />
+    <Content Include="resources\vendor\jquery\jquery-ui.min.js" />
     <Content Include="resources\vendor\jquery\jquery.js" />
     <Content Include="resources\vendor\jquery\jquery.min.js" />
     <Content Include="resources\vendor\jquery\jquery.slim.js" />
@@ -1927,6 +1936,7 @@
     <Content Include="Views\Transaction\ShowMine.cshtml" />
     <Content Include="Views\Transaction\IndexHh.cshtml" />
     <Content Include="Views\Transaction\Create.cshtml" />
+    <Content Include="Views\Transaction\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

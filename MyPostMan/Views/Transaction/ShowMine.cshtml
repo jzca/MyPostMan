@@ -46,20 +46,28 @@ else
                         @if (record.IsCreator || record.IsHhOwner)
                         {
                             <td>
-                                <a href="@Url.Action("Edit", "Transaction", new { id = record.Id })">
+                                <a href="@Url.Action("Edit", "Transaction", new { id = record.Id, baId= record.BankAccountId })">
                                     <i class="fas fa-fw fa-wrench"></i>
                                 </a>
                             </td>
+                            if (!record.IsVoid)
+                            {
+                                <td>
+                                    @using (Html.BeginForm("Void", "Transaction", new { id = record.Id, baId = record.BankAccountId }, FormMethod.Post))
+                                    {
+                                        <button type="submit" class="btn btn-warning btn-sm btn-circle">
+                                            <i class="fas fa-strikethrough"></i>
+                                        </button>
+                                    }
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+
                             <td>
-                                @using (Html.BeginForm("Void", "Transaction", new { id = record.Id}, FormMethod.Post))
-                                {
-                                    <button type="submit" class="btn btn-warning btn-sm btn-circle">
-                                        <i class="fas fa-strikethrough"></i>
-                                    </button>
-                                }
-                            </td>
-                            <td>
-                                @using (Html.BeginForm("Delete", "Transaction", new { id = record.Id}, FormMethod.Post))
+                                @using (Html.BeginForm("Delete", "Transaction", new { id = record.Id, baId = record.BankAccountId }, FormMethod.Post))
                                 {
                                     <button type="submit" class="btn btn-danger btn-sm btn-circle">
                                         <i class="far fa-trash-alt"></i>

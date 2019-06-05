@@ -108,7 +108,7 @@ namespace MyPostMan.Models.Helper
             {
                 return httpClient.PutAsync(url, encodedValues).Result;
             }
-           
+
             return httpClient.PostAsync(url, encodedValues).Result;
 
         }
@@ -143,10 +143,17 @@ namespace MyPostMan.Models.Helper
             {
                 return httpClient.DeleteAsync(url).Result;
             }
-
-            if (method == CusHttpMethod.Put)
+            else if (method == CusHttpMethod.Put)
             {
                 return httpClient.PutAsync(url, null).Result;
+            }
+            else if (method == CusHttpMethod.Post)
+            {
+                return httpClient.PostAsync(url, null).Result;
+            }
+            else if (method == CusHttpMethod.Get)
+            {
+                return httpClient.GetAsync(url).Result;
             }
 
             return httpClient.GetAsync(url).Result;
