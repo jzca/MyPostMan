@@ -367,6 +367,67 @@ namespace MyPostMan.Controllers
             return View("Erro");
         }
 
+        [HttpGet]
+        public ActionResult Detail(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return RedirectToAction(nameof(HouseholdController.Index));
+            }
+
+            var response = RequestHelper.SendGetRequestAuthGetDel("BankAccount"
+                , "GetTotalBalanceByHhId", id, MyToken, CusHttpMethod.Get);
+
+            var dataddd = RequestHelper.ReadResponse(response);
+
+            var overall = new BankAccountHouseholdViewModel();
+
+            if (response.IsSuccessStatusCode)
+            {
+                var data = RequestHelper.ReadResponse(response);
+                overall = JsonConvert.DeserializeObject<BankAccountHouseholdViewModel>(data);
+            }
+
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                overall.BigEaBankAccDetail = new List<BigEaBankAccDetailViewModel>();
+                return View(overall);
+            }
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                ViewBag.Nf = false;
+                return View("NofoundAuth");
+            }
+
+            var response2 = RequestHelper.SendGetRequestAuthGetDel("BankAccount"
+               , "BigEaBankAccBalanceByHhId", id, MyToken, CusHttpMethod.Get);
+
+
+            if (response2.IsSuccessStatusCode)
+            {
+                var data2 = RequestHelper.ReadResponse(response2);
+                overall.BigEaBankAccDetail=JsonConvert.DeserializeObject<List<BigEaBankAccDetailViewModel>>(data2);
+                return View(overall);
+            }
+
+            if (response2.StatusCode == HttpStatusCode.NotFound)
+            {
+                overall.BigEaBankAccDetail = new List<BigEaBankAccDetailViewModel>();
+                return View(overall);
+            }
+
+            if (response2.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                ViewBag.Nf = false;
+                return View("NofoundAuth");
+            }
+
+            return View("Erro");
+        }
+
+
+
         private void DealBadRequest(HttpResponseMessage response)
         {
             if (response.StatusCode == HttpStatusCode.BadRequest)

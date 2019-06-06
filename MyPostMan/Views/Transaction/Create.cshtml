@@ -24,19 +24,11 @@
     </div>
 
     <div class="form-group">
-        <label class="control-label col-md-2" for="dateTransacted">Date Transacted</label>
+        <label class="control-label col-md-2" for="dateTransacted"></label>
         @*@Html.EditorFor(p => p.DateTransacted, new { @class = "form-control date-picker", placeholder = "year-month-date", value="" })*@
-        <input class="form-control date-picker" name="DateTransacted" id="dateTransacted" />
+        <input class="form-control date-picker" name="DateTransacted" id="dateTransacted" value="@Model.DateTransacted" />
 
     </div>
-
-    @*<div class="form-group">
-        <label class="control-label col-md-2" for="CreatedOn">Date Transacted</label>
-        <div class="col-md-10">
-            <input class="form-control single-line" data-val="true" data-val-date="The field must be a date." data-val-required="This field is required." id="dateTransacted" name="DateTransacted" type="date" value="" />
-            <span class="field-validation-valid" data-valmsg-for="CreatedOn" data-valmsg-replace="true"></span>
-        </div>
-    </div>*@
 
     <div class="form-group">
         @Html.LabelFor(p => p.BankAccounts)
@@ -59,14 +51,20 @@
 
 @section Css{
     <link href="~/resources/css/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/resources/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
 }
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/resources/vendor/jquery/jquery-ui.min.js"></script>
+    <script src="~/resources/vendor/jquery/jquery-ui-timepicker-addon.js"></script>
     <script type="text/javascript">
         $(function () {
-            $('#dateTransacted').datepicker();
+            $('#dateTransacted').datetimepicker(
+                {
+                    dateFormat: 'yy-mm-dd',
+                    timeFormat: 'h:mm:ss TT'
+                });
         })
     </script>
 }

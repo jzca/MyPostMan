@@ -167,6 +167,7 @@ namespace MyPostMan.Controllers
                 var categories = JsonConvert
                     .DeserializeObject<List<DropDownListTranscationBindingModel>>(data);
                 model.Categories = new SelectList(categories, "Id", "Name");
+                model.DateTransacted = DateTime.Today;
                 return View(model);
             }
             else if (responseCat.StatusCode == HttpStatusCode.NotFound)
@@ -249,7 +250,6 @@ namespace MyPostMan.Controllers
 
                 });
 
-                var model = new TranscationBindingModel();
 
                 var responseBa = RequestHelper.SendGetRequestAuthGetDel("BankAccount"
                     , "GetAllByHhId", id, MyToken, CusHttpMethod.Get);
@@ -259,7 +259,7 @@ namespace MyPostMan.Controllers
                     var dataBa = RequestHelper.ReadResponse(responseBa);
                     var bankAccounts = JsonConvert
                         .DeserializeObject<List<DropDownListTranscationBindingModel>>(dataBa);
-                    model.BankAccounts = new SelectList(bankAccounts, "Id", "Name");
+                    formData.BankAccounts = new SelectList(bankAccounts, "Id", "Name");
                 }
                 else if (responseBa.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -277,8 +277,8 @@ namespace MyPostMan.Controllers
                     var dataCat = RequestHelper.ReadResponse(responseCat);
                     var categories = JsonConvert
                         .DeserializeObject<List<DropDownListTranscationBindingModel>>(dataCat);
-                    model.Categories = new SelectList(categories, "Id", "Name");
-                    return View(model);
+                    formData.Categories = new SelectList(categories, "Id", "Name");
+                    return View(formData);
                 }
                 else if (responseCat.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -347,8 +347,23 @@ namespace MyPostMan.Controllers
         {
             if (!ModelState.IsValid)
             {
-                TempData["Message"] = "Date Transacted maybe not valid";
-                return View("Error");
+                var responseCat = RequestHelper.SendGetRequestAuthGetDel("Category"
+                    , "GetAllByHhId", id, MyToken, CusHttpMethod.Get);
+
+                if (responseCat.IsSuccessStatusCode)
+                {
+                    var dataCat = RequestHelper.ReadResponse(responseCat);
+                    var categories = JsonConvert
+                        .DeserializeObject<List<DropDownListTranscationBindingModel>>(dataCat);
+                    formData.Categories = new SelectList(categories, "Id", "Name");
+                    return View(formData);
+                }
+                else if (responseCat.StatusCode == HttpStatusCode.NotFound)
+                {
+                    TempData["Message"] =
+                    "There are no Categories, therefore you cannot edit a transcation";
+                    return View("Error");
+                }
             }
 
             var title = formData.Title;
@@ -405,7 +420,6 @@ namespace MyPostMan.Controllers
 
                 });
 
-                var model = new EditTranscationBindingModel();
 
                 var responseCat = RequestHelper.SendGetRequestAuthGetDel("Category"
                 , "GetAllByHhBaId", baId, MyToken, CusHttpMethod.Get);
@@ -415,12 +429,14 @@ namespace MyPostMan.Controllers
                     var dataCat = RequestHelper.ReadResponse(responseCat);
                     var categories = JsonConvert
                         .DeserializeObject<List<DropDownListTranscationBindingModel>>(dataCat);
-                    model.Categories = new SelectList(categories, "Id", "Name");
-                    return View(model);
+                    formData.Categories = new SelectList(categories, "Id", "Name");
+                    return View(formData);
                 }
                 else if (responseCat.StatusCode == HttpStatusCode.NotFound)
                 {
-                    return View(model);
+                    TempData["Message"] =
+                    "There are no Categories, therefore you cannot edit a transcation";
+                    return View("Error");
                 }
 
                 return View("Error");

@@ -25,7 +25,7 @@
 
     <div class="form-group">
         <label class="control-label col-md-2" for="dateTransacted">Date Transacted</label>
-        <input class="form-control date-picker" name="DateTransacted" id="dateTransacted" placeholder="Please type the below data or change it." />
+        <input class="form-control date-picker" name="DateTransacted" id="dateTransacted" value="@Model.DateTransacted" placeholder="Please type the below data or change it." />
         <div>(Original: @Html.DisplayFor(p => p.DateTransacted, new { @class = "form-control" }))</div>
     </div>
 
@@ -43,14 +43,20 @@
 
 @section Css{
     <link href="~/resources/css/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/resources/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
 }
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/resources/vendor/jquery/jquery-ui.min.js"></script>
+    <script src="~/resources/vendor/jquery/jquery-ui-timepicker-addon.js"></script>
     <script type="text/javascript">
         $(function () {
-            $('#dateTransacted').datepicker();
+            $('#dateTransacted').datetimepicker(
+                {
+                    dateFormat: 'yy-mm-dd',
+                    timeFormat: 'h:mm:ss TT'
+                });
         })
     </script>
 }
