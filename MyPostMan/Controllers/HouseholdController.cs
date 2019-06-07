@@ -276,7 +276,7 @@ namespace MyPostMan.Controllers
             }
 
             var response2 = RequestHelper.SendGetRequestAuthGetDel("BankAccount"
-               , "BigEaBankAccBalanceByHhId", id, MyToken, CusHttpMethod.Get);
+               , "OneStepBankAccBalanceByHhId", id, MyToken, CusHttpMethod.Get);
 
 
             if (response2.IsSuccessStatusCode)
@@ -346,17 +346,6 @@ namespace MyPostMan.Controllers
                 return View("Erro");
             }
         }
-
-        //private ResDealer SimpleNotFound(HttpResponseMessage response)
-        //{
-        //    var resDealer = new ResDealer();
-        //    if (response.StatusCode == HttpStatusCode.NotFound)
-        //    {
-        //        resDealer.VBagNf = true;
-        //        resDealer.RedirectedView = View("NofoundAuth");
-        //    }
-        //    return resDealer;
-        //}
 
 
 

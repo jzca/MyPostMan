@@ -34,7 +34,11 @@ else
                 {
                     <tr>
                         <td>@record.Id</td>
-                        <td>@record.Name</td>
+                        <td>
+                            <a href="@Url.Action("Detail", "Household", new { id = record.Id })">
+                                @record.Name
+                            </a>
+                        </td>
                         <td>@record.DateCreated</td>
                         <td>@record.DateUpdated</td>
                         <td>@record.Description</td>

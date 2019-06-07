@@ -9,6 +9,11 @@ namespace MyPostMan.Models.BindingModel
 {
     public class TranscationBindingModel
     {
+        public TranscationBindingModel()
+        {
+            DateTransacted = DateTime.Today;
+        }
+
         public string Title { get; set; }
         public string Description { get; set; }
         public decimal Amount { get; set; }

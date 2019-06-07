@@ -28,9 +28,7 @@ namespace MyPostMan.Controllers
         [HttpGet]
         public ActionResult IndexHh()
         {
-            var response = RequestHelper.SendGetRequestAuthGetDel("Household"
-                , "GetByUserId", null, MyToken, CusHttpMethod.Get);
-
+            var response = SendReqGetRes(false, null, "Household", "GetByUserId");
 
             return ResDealerIndexHhBa(response, true);
         }
@@ -38,11 +36,9 @@ namespace MyPostMan.Controllers
         [HttpGet]
         public ActionResult IndexBa()
         {
-            var response = RequestHelper.SendGetRequestAuthGetDel("BankAccount"
-                , "GetAllByUserId", null, MyToken, CusHttpMethod.Get);
+            var response = SendReqGetRes(false, null, "BankAccount", "GetAllByUserId");
 
             return ResDealerIndexHhBa(response, false);
-
         }
 
         [HttpGet]
@@ -54,9 +50,7 @@ namespace MyPostMan.Controllers
                 return RedirectToAction(nameof(TransactionController.IndexBa));
             }
 
-            var response = RequestHelper.SendGetRequestAuthGetDel("Transaction"
-              , "GetAllByBaId", id, MyToken, CusHttpMethod.Get);
-
+            var response = SendReqGetRes(true, id, "Transaction", "GetAllByBaId");
 
             if (response.IsSuccessStatusCode)
             {
@@ -75,13 +69,11 @@ namespace MyPostMan.Controllers
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                ViewBag.Nf = false;
-                return View("NofoundAuth");
+                return NotFoundOrUnauthorized(false);
             }
 
-
-
             return View("Error");
+
         }
 
 
@@ -95,12 +87,11 @@ namespace MyPostMan.Controllers
 
             var model = new TranscationBindingModel();
 
-            var responseBa = RequestHelper.SendGetRequestAuthGetDel("BankAccount"
-                , "GetAllByHhId", id, MyToken, CusHttpMethod.Get);
+            var responseBa = SendReqGetRes(true, id, "BankAccount", "GetAllByHhId");
 
             if (responseBa.IsSuccessStatusCode)
             {
-                model.BankAccounts = MakeNewDropDownList(ReadOutputBankAccDropDownList(responseBa));
+                model.BankAccounts = MakeNewDropDownList(ReadOutputDropDownList(responseBa));
             }
             else if (responseBa.StatusCode == HttpStatusCode.NotFound)
             {
@@ -108,13 +99,12 @@ namespace MyPostMan.Controllers
                 return View("Error");
             }
 
-            var responseCat = RequestHelper.SendGetRequestAuthGetDel("Category"
-                , "GetAllByHhId", id, MyToken, CusHttpMethod.Get);
+            var responseCat = SendReqGetRes(true, id, "Category", "GetAllByHhId");
 
             if (responseCat.IsSuccessStatusCode)
             {
-                model.Categories = MakeNewDropDownList(ReadOutputCategoryDropDownList(responseCat));
-                model.DateTransacted = DateTime.Today;
+                model.Categories = MakeNewDropDownList(ReadOutputDropDownList(responseCat));
+
                 return View(model);
             }
             else if (responseCat.StatusCode == HttpStatusCode.NotFound)
@@ -159,17 +149,15 @@ namespace MyPostMan.Controllers
 
             if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                ViewBag.Nf = true;
-                return View("NofoundAuth");
+                return NotFoundOrUnauthorized(true);
             }
             else if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                ViewBag.Nf = false;
-                return View("NofoundAuth");
+                return NotFoundOrUnauthorized(false);
             }
             else if (response.StatusCode == HttpStatusCode.InternalServerError)
             {
-                TempData["Message"] = "Date Transacted maybe not valid";
+                CusAddTempDataMsg("Date Transacted maybe not valid");
                 return View("Error");
             }
             else if (response.StatusCode != HttpStatusCode.BadRequest)
@@ -181,12 +169,11 @@ namespace MyPostMan.Controllers
             {
                 BadRequestSmall(response);
 
-                var responseBa = RequestHelper.SendGetRequestAuthGetDel("BankAccount"
-                    , "GetAllByHhId", id, MyToken, CusHttpMethod.Get);
+                var responseBa = SendReqGetResDropDownList(true, id);
 
                 if (responseBa.IsSuccessStatusCode)
                 {
-                    formData.BankAccounts = MakeNewDropDownList(ReadOutputBankAccDropDownList(responseBa));
+                    formData.BankAccounts = MakeNewDropDownList(ReadOutputDropDownList(responseBa));
                 }
                 else if (responseBa.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -195,12 +182,11 @@ namespace MyPostMan.Controllers
                 }
 
 
-                var responseCat = RequestHelper.SendGetRequestAuthGetDel("Category"
-                    , "GetAllByHhId", id, MyToken, CusHttpMethod.Get);
+                var responseCat = SendReqGetResDropDownList(false, id);
 
                 if (responseCat.IsSuccessStatusCode)
                 {
-                    formData.Categories = MakeNewDropDownList(ReadOutputCategoryDropDownList(responseCat));
+                    formData.Categories = MakeNewDropDownList(ReadOutputDropDownList(responseCat));
                     return View(formData);
                 }
                 else if (responseCat.StatusCode == HttpStatusCode.NotFound)
@@ -224,10 +210,7 @@ namespace MyPostMan.Controllers
                 return RedirectToAction(nameof(TransactionController.IndexBa));
             }
 
-            var response = RequestHelper.SendGetRequestAuthGetDel("Transaction"
-                , "GetById", id, MyToken, CusHttpMethod.Get);
-
-            var data2 = RequestHelper.ReadResponse(response);
+            var response = SendReqGetRes(true, id, "Transaction", "GetById");
 
             if (response.IsSuccessStatusCode)
             {
@@ -235,12 +218,11 @@ namespace MyPostMan.Controllers
                 var transactionModel = JsonConvert
                     .DeserializeObject<EditTranscationBindingModel>(dataTrans);
 
-                var responseCat = RequestHelper.SendGetRequestAuthGetDel("Category"
-                , "GetAllByHhBaId", baId, MyToken, CusHttpMethod.Get);
+                var responseCat = SendReqGetRes(true, baId, "Category", "GetAllByHhBaId");
 
                 if (responseCat.IsSuccessStatusCode)
                 {
-                    transactionModel.Categories = MakeNewDropDownList(ReadOutputCategoryDropDownList(responseCat));
+                    transactionModel.Categories = MakeNewDropDownList(ReadOutputDropDownList(responseCat));
                     return View(transactionModel);
                 }
                 else if (responseCat.StatusCode == HttpStatusCode.NotFound)
@@ -265,12 +247,11 @@ namespace MyPostMan.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var responseCat = RequestHelper.SendGetRequestAuthGetDel("Category"
-                    , "GetAllByHhId", id, MyToken, CusHttpMethod.Get);
+                var responseCat = SendReqGetResCatDropDownListByBa(baId);
 
                 if (responseCat.IsSuccessStatusCode)
                 {
-                    formData.Categories = MakeNewDropDownList(ReadOutputCategoryDropDownList(responseCat));
+                    formData.Categories = MakeNewDropDownList(ReadOutputDropDownList(responseCat));
                     return View(formData);
                 }
                 else if (responseCat.StatusCode == HttpStatusCode.NotFound)
@@ -313,7 +294,7 @@ namespace MyPostMan.Controllers
             }
             else if (response.StatusCode == HttpStatusCode.InternalServerError)
             {
-                TempData["Message"] = "Date Transacted maybe not valid";
+                CusAddTempDataMsg("Date Transacted maybe not valid");
                 return View("Error");
             }
             else if (response.StatusCode != HttpStatusCode.BadRequest)
@@ -325,13 +306,11 @@ namespace MyPostMan.Controllers
             {
                 BadRequestSmall(response);
 
-
-                var responseCat = RequestHelper.SendGetRequestAuthGetDel("Category"
-                , "GetAllByHhBaId", baId, MyToken, CusHttpMethod.Get);
+                var responseCat = SendReqGetResCatDropDownListByBa(baId);
 
                 if (responseCat.IsSuccessStatusCode)
                 {
-                    formData.Categories = MakeNewDropDownList(ReadOutputCategoryDropDownList(responseCat));
+                    formData.Categories = MakeNewDropDownList(ReadOutputDropDownList(responseCat));
                     return View(formData);
                 }
                 else if (responseCat.StatusCode == HttpStatusCode.NotFound)
@@ -371,10 +350,6 @@ namespace MyPostMan.Controllers
 
         }
 
-        private enum MyResDealer
-        {
-            regSuccess, dealBaViewModel, aList, notFound, returnBaViewModel, noAuth, badResquest, empty, single
-        }
 
         private ActionResult ResDealerDelVoid(HttpResponseMessage response, int baId, bool forVoid)
         {
@@ -384,17 +359,15 @@ namespace MyPostMan.Controllers
             }
             else if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                ViewBag.Nf = true;
-                return View("NofoundAuth");
+                return NotFoundOrUnauthorized(true);
             }
             else if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                ViewBag.Nf = false;
-                return View("NofoundAuth");
+                return NotFoundOrUnauthorized(false);
             }
             else if (forVoid && response.StatusCode == HttpStatusCode.BadRequest)
             {
-                TempData["Message"] = " The Transcation is already void.";
+                CusAddTempDataMsg("The Transcation is already void.");
                 return View("Error");
             }
             else
@@ -402,37 +375,42 @@ namespace MyPostMan.Controllers
                 return View("Error");
             }
         }
+
+        private ActionResult NotFoundOrUnauthorized(bool isNf)
+        {
+            ViewBag.Nf = isNf;
+            return View("NofoundAuth");
+        }
+
 
         private ActionResult ToShowMe(int baId)
         {
             return RedirectToAction(nameof(TransactionController.ShowMine), new { id = baId });
         }
 
-        private List<DropDownListTranscationBindingModel> ReadOutputBankAccDropDownList(HttpResponseMessage responseBa)
+        private List<DropDownListTranscationBindingModel> ReadOutputDropDownList(HttpResponseMessage resp)
         {
-            var data = RequestHelper.ReadResponse(responseBa);
+            var data = RequestHelper.ReadResponse(resp);
             return JsonConvert
                 .DeserializeObject<List<DropDownListTranscationBindingModel>>(data);
         }
 
-        private List<DropDownListTranscationBindingModel> ReadOutputCategoryDropDownList(HttpResponseMessage responseCat)
+        private void CusAddTempDataMsg(string msg)
         {
-            var data = RequestHelper.ReadResponse(responseCat);
-            return JsonConvert
-                .DeserializeObject<List<DropDownListTranscationBindingModel>>(data);
+            TempData["Message"] = msg;
         }
 
         private void AddTempDataMsg(bool isBa)
         {
             if (isBa)
             {
-                TempData["Message"] =
-               "There are no Bank Accounts, therefore you cannot create/edit a transcation";
+                CusAddTempDataMsg(
+               "There are no Bank Accounts, therefore you cannot create/edit a transcation");
             }
             else
             {
-                TempData["Message"] =
-                "There are no Categories, therefore you cannot create/edit a transcation";
+                CusAddTempDataMsg(
+                "There are no Categories, therefore you cannot create/edit a transcation");
             }
 
         }
@@ -509,6 +487,42 @@ namespace MyPostMan.Controllers
             {
                 return View("Error");
             }
+        }
+
+        private HttpResponseMessage SendReqGetRes(bool hasId, int? inputId, string controller, string action)
+        {
+            if (hasId && inputId.HasValue)
+            {
+                return RequestHelper.SendGetRequestAuthGetDel(controller
+                , action, inputId.Value, MyToken, CusHttpMethod.Get);
+
+            }
+            else
+            {
+                return RequestHelper.SendGetRequestAuthGetDel(controller
+                , action, null, MyToken, CusHttpMethod.Get);
+            }
+        }
+
+        private HttpResponseMessage SendReqGetResDropDownList(bool isBa, int inputId)
+        {
+            if (isBa)
+            {
+                return RequestHelper.SendGetRequestAuthGetDel("BankAccount"
+                    , "GetAllByHhId", inputId, MyToken, CusHttpMethod.Get);
+
+            }
+            else
+            {
+                return RequestHelper.SendGetRequestAuthGetDel("Category"
+                    , "GetAllByHhId", inputId, MyToken, CusHttpMethod.Get);
+            }
+        }
+
+        private HttpResponseMessage SendReqGetResCatDropDownListByBa(int baId)
+        {
+            return RequestHelper.SendGetRequestAuthGetDel("Category"
+                , "GetAllByHhBaId", baId, MyToken, CusHttpMethod.Get);
         }
 
 
