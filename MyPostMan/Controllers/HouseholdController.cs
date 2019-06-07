@@ -76,8 +76,6 @@ namespace MyPostMan.Controllers
             var response = RequestHelper.SendGetRequestAuth(parameters, "Household"
                 , "Create", null, MyToken, CusHttpMethod.Post);
 
-            //var data = RequestHelper.ReadResponse(response);
-
             if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction(nameof(HouseholdController.Index));
@@ -109,19 +107,7 @@ namespace MyPostMan.Controllers
                 return View(model);
             }
 
-            if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                ViewBag.Nf = true;
-                return View("NofoundAuth");
-            }
-
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                ViewBag.Nf = false;
-                return View("NofoundAuth");
-            }
-
-            return View("Erro");
+            return GeneralResDealer(response, false, true, true, false);
         }
 
         [HttpPost]
@@ -142,28 +128,7 @@ namespace MyPostMan.Controllers
             var response = RequestHelper.SendGetRequestAuth(parameters, "Household"
                 , "Edit", id, MyToken, CusHttpMethod.Put);
 
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToAction(nameof(HouseholdController.Index));
-            }
-
-            if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                ViewBag.Nf = true;
-                return View("NofoundAuth");
-            }
-
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                ViewBag.Nf = false;
-                return View("NofoundAuth");
-            }
-
-            DealBadRequest(response);
-
-            return View();
-
-
+            return GeneralResDealer(response, true, true, true, true);
         }
 
         [HttpGet]
@@ -173,8 +138,6 @@ namespace MyPostMan.Controllers
             {
                 return RedirectToAction(nameof(HouseholdController.Index));
             }
-
-            var model = new InviteUserBindingModel();
 
             return View();
         }
@@ -193,27 +156,7 @@ namespace MyPostMan.Controllers
             var response = RequestHelper.SendGetRequestAuth(parameters, "Household"
                 , "InviteUserByHhIdEmail", id, MyToken, CusHttpMethod.Post);
 
-
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToAction(nameof(HouseholdController.Index));
-            }
-
-            if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                ViewBag.Nf = true;
-                return View("NofoundAuth");
-            }
-
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                ViewBag.Nf = false;
-                return View("NofoundAuth");
-            }
-
-            DealBadRequest(response);
-
-            return View();
+            return GeneralResDealer(response, true, true, true, true);
 
 
         }
@@ -250,27 +193,7 @@ namespace MyPostMan.Controllers
             var response = RequestHelper.SendGetRequestAuth(parameters, "Household"
                 , "JoinHouseholdById", id, MyToken, CusHttpMethod.Post);
 
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToAction(nameof(HouseholdController.Index));
-            }
-
-            if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                ViewBag.Nf = true;
-                return View("NofoundAuth");
-            }
-
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                ViewBag.Nf = false;
-                return View("NofoundAuth");
-            }
-
-            DealBadRequest(response);
-
-            return View();
-
+            return GeneralResDealer(response, true, true, true, true);
 
         }
 
@@ -292,19 +215,7 @@ namespace MyPostMan.Controllers
                 return View(model);
             }
 
-            if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                ViewBag.Nf = true;
-                return View("NofoundAuth");
-            }
-
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                ViewBag.Nf = false;
-                return View("NofoundAuth");
-            }
-
-            return View();
+            return GeneralResDealer(response, false, true, true, false);
 
 
         }
@@ -317,25 +228,8 @@ namespace MyPostMan.Controllers
             var response = RequestHelper.SendGetRequestAuth(parameters, "Household"
                 , "Leave", id, MyToken, CusHttpMethod.Post);
 
+            return GeneralResDealer(response, true, true, true, false);
 
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToAction(nameof(HouseholdController.Index));
-            }
-
-            if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                ViewBag.Nf = true;
-                return View("NofoundAuth");
-            }
-
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                ViewBag.Nf = false;
-                return View("NofoundAuth");
-            }
-
-            return View("Erro");
         }
 
 
@@ -346,25 +240,8 @@ namespace MyPostMan.Controllers
             var response = RequestHelper.SendGetRequestAuthGetDel("Household"
                 , "Delete", id, MyToken, CusHttpMethod.Delete);
 
+            return GeneralResDealer(response, true, true, true, false);
 
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToAction(nameof(HouseholdController.Index));
-            }
-
-            if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                ViewBag.Nf = true;
-                return View("NofoundAuth");
-            }
-
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                ViewBag.Nf = false;
-                return View("NofoundAuth");
-            }
-
-            return View("Erro");
         }
 
         [HttpGet]
@@ -377,8 +254,6 @@ namespace MyPostMan.Controllers
 
             var response = RequestHelper.SendGetRequestAuthGetDel("BankAccount"
                 , "GetTotalBalanceByHhId", id, MyToken, CusHttpMethod.Get);
-
-            var dataddd = RequestHelper.ReadResponse(response);
 
             var overall = new BankAccountHouseholdViewModel();
 
@@ -407,7 +282,7 @@ namespace MyPostMan.Controllers
             if (response2.IsSuccessStatusCode)
             {
                 var data2 = RequestHelper.ReadResponse(response2);
-                overall.BigEaBankAccDetail=JsonConvert.DeserializeObject<List<BigEaBankAccDetailViewModel>>(data2);
+                overall.BigEaBankAccDetail = JsonConvert.DeserializeObject<List<BigEaBankAccDetailViewModel>>(data2);
                 return View(overall);
             }
 
@@ -444,6 +319,44 @@ namespace MyPostMan.Controllers
                 });
             }
         }
+
+        private ActionResult GeneralResDealer(HttpResponseMessage response, bool regSuccess, bool notFound, bool noAuth, bool badResquest)
+        {
+            if(regSuccess && response.IsSuccessStatusCode)
+            {
+                return RedirectToAction(nameof(HouseholdController.Index));
+            }
+            else if (notFound && response.StatusCode == HttpStatusCode.NotFound)
+            {
+                ViewBag.Nf = true;
+                return View("NofoundAuth");
+            }
+            else if  (noAuth && response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                ViewBag.Nf = false;
+                return View("NofoundAuth");
+            }
+            else if (badResquest)
+            {
+                DealBadRequest(response);
+                return View();
+            }
+            else
+            {
+                return View("Erro");
+            }
+        }
+
+        //private ResDealer SimpleNotFound(HttpResponseMessage response)
+        //{
+        //    var resDealer = new ResDealer();
+        //    if (response.StatusCode == HttpStatusCode.NotFound)
+        //    {
+        //        resDealer.VBagNf = true;
+        //        resDealer.RedirectedView = View("NofoundAuth");
+        //    }
+        //    return resDealer;
+        //}
 
 
 

@@ -55,7 +55,16 @@
                 </a>
                 <div id="accountPages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="@Url.Action("Login", "Account")">Login</a>
+                        <a class="collapse-item" href="@Url.Action("Login", "Account")">
+                            @if (Request.Cookies["PostManCookie"] == null)
+                            {
+                                <span>Login</span>
+                            }
+                            else
+                            {
+                                <span>Switch Account</span>
+                            }
+                        </a>
                         @if (Request.Cookies["PostManCookie"] != null)
                         {
                             <a class="collapse-item" href="@Url.Action("ChangePassword", "Account")">Change Password</a>

@@ -43,6 +43,41 @@ namespace MyPostMan.Controllers
             }
         }
 
+        private ActionResult GeneralResDealer(HttpResponseMessage response, bool regSuccess, int? hhId, bool notFound, bool noAuth, bool badResquest)
+        {
+            if (regSuccess && response.IsSuccessStatusCode)
+            {
+                if (hhId.HasValue)
+                {
+                    return RedirectToAction(nameof(CategoryController.ShowMine), new { id = hhId.Value });
+                }
+                else
+                {
+                    return View("Error");
+                }
+
+            }
+            else if (notFound && response.StatusCode == HttpStatusCode.NotFound)
+            {
+                ViewBag.Nf = true;
+                return View("NofoundAuth");
+            }
+            else if (noAuth && response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                ViewBag.Nf = false;
+                return View("NofoundAuth");
+            }
+            else if (badResquest)
+            {
+                DealBadRequest(response);
+                return View();
+            }
+            else
+            {
+                return View("Erro");
+            }
+        }
+
         [HttpGet]
         public ActionResult IndexHh()
         {
@@ -93,7 +128,7 @@ namespace MyPostMan.Controllers
                 return View(model);
             }
 
-            return View();
+            return View("Error");
         }
 
         [HttpGet]
@@ -124,15 +159,7 @@ namespace MyPostMan.Controllers
                 return View(model);
             }
 
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                ViewBag.Nf = false;
-                return View("NofoundAuth");
-            }
-
-
-
-            return View();
+            return GeneralResDealer(response, false, null, false, true, false);
         }
 
 
@@ -162,33 +189,7 @@ namespace MyPostMan.Controllers
             var response = RequestHelper.SendGetRequestAuth(parameters, "Category"
                 , "Create", null, MyToken, CusHttpMethod.Post);
 
-            //var data = RequestHelper.ReadResponse(response);
-
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToAction(nameof(CategoryController.ShowMine), new { id });
-            }
-
-            if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                ViewBag.Nf = true;
-                return View("NofoundAuth");
-            }
-            else if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                ViewBag.Nf = false;
-                return View("NofoundAuth");
-            }
-            else if (response.StatusCode != HttpStatusCode.BadRequest)
-            {
-                return View("Error");
-            }
-
-            DealBadRequest(response);
-
-            return View();
-
-
+            return GeneralResDealer(response, true, id, true, true, true);
         }
 
         [HttpGet]
@@ -210,13 +211,7 @@ namespace MyPostMan.Controllers
                 return View(model);
             }
 
-            if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                ViewBag.Nf = true;
-                return View("NofoundAuth");
-            }
-
-            return View();
+            return GeneralResDealer(response, false, null, true, false, false);
         }
 
         [HttpPost]
@@ -237,27 +232,7 @@ namespace MyPostMan.Controllers
             var response = RequestHelper.SendGetRequestAuth(parameters, "Category"
                 , "Edit", id, MyToken, CusHttpMethod.Put);
 
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToAction(nameof(CategoryController.ShowMine), new { id = hhId });
-            }
-
-            if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                ViewBag.Nf = true;
-                return View("NofoundAuth");
-            }
-
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                ViewBag.Nf = false;
-                return View("NofoundAuth");
-            }
-
-            DealBadRequest(response);
-
-            return View();
-
+            return GeneralResDealer(response, true, hhId, true, true, true);
 
         }
 
@@ -268,25 +243,8 @@ namespace MyPostMan.Controllers
             var response = RequestHelper.SendGetRequestAuthGetDel("Category"
                 , "Delete", id, MyToken, CusHttpMethod.Delete);
 
+            return GeneralResDealer(response, true, hhId, true, true, false);
 
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToAction(nameof(CategoryController.ShowMine), new { id = hhId });
-            }
-
-            if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                ViewBag.Nf = true;
-                return View("NofoundAuth");
-            }
-
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                ViewBag.Nf = false;
-                return View("NofoundAuth");
-            }
-
-            return View();
         }
 
     }

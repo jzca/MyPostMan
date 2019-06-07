@@ -144,11 +144,11 @@
     <Compile Include="Models\BindingModel\DropDownListTranscationBindingModel.cs" />
     <Compile Include="Models\BindingModel\InviteUserBindingModel.cs" />
     <Compile Include="Models\Filter\AuthorizeFilter.cs" />
-    <Compile Include="Models\Filter\NoFoundAuthFilter.cs" />
     <Compile Include="Models\Helper\AppHelper.cs" />
     <Compile Include="Models\HttpActionContext.cs" />
     <Compile Include="Models\LogInData.cs" />
     <Compile Include="Models\MsgModelState.cs" />
+    <Compile Include="Models\ResDealer.cs" />
     <Compile Include="Models\ViewModel\BankAccountHouseholdViewModel.cs" />
     <Compile Include="Models\ViewModel\BankAccountViewModel.cs" />
     <Compile Include="Models\ViewModel\BankAccTransDetailViewModel.cs" />

@@ -42,6 +42,73 @@ namespace MyPostMan.Controllers
             }
         }
 
+        private enum MyResDealer
+        {
+            regSuccess, dealBaViewModel ,aList, notFound, returnBaViewModel, noAuth, badResquest, empty, single
+        }
+
+        private ActionResult GeneralResDealer(HttpResponseMessage response, MyResDealer regSuccess, MyResDealer dealBaViewModel, MyResDealer isList,  int? hhId, MyResDealer notFound, MyResDealer returnBaViewModel, MyResDealer noAuth, MyResDealer badResquest)
+        {
+            if (regSuccess== MyResDealer.regSuccess && response.IsSuccessStatusCode)
+            {
+                if (dealBaViewModel == MyResDealer.dealBaViewModel)
+                {
+                    var data = RequestHelper.ReadResponse(response);
+
+                    if(isList == MyResDealer.aList)
+                    {
+                        var listModel = JsonConvert.DeserializeObject<List<BankAccountViewModel>>(data);
+                        return View(listModel);
+                    }
+                    else
+                    {
+                        var oneModel = JsonConvert.DeserializeObject<BankAccountBindingModel>(data);
+                        return View(oneModel);
+                    }
+
+                }
+                else
+                {
+                    if (hhId.HasValue)
+                    {
+                    return RedirectToAction(nameof(BankAccountController.ShowMine), "BankAccount", new { id = hhId.Value });
+                    }
+                    else
+                    {
+                        return View("Error");
+                    }
+                }
+            }
+            else if (notFound== MyResDealer.notFound && response.StatusCode == HttpStatusCode.NotFound)
+            {
+                if (returnBaViewModel == MyResDealer.returnBaViewModel)
+                {
+                    var model = new List<BankAccountViewModel>();
+
+                    return View(model);
+                }
+                else
+                {
+                    ViewBag.Nf = true;
+                    return View("NofoundAuth");
+                }
+            }
+            else if (noAuth == MyResDealer.noAuth && response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                ViewBag.Nf = false;
+                return View("NofoundAuth");
+            }
+            else if (badResquest == MyResDealer.badResquest)
+            {
+                DealBadRequest(response);
+                return View();
+            }
+            else
+            {
+                return View("Erro");
+            }
+        }
+
         [HttpGet]
         public ActionResult IndexHh()
         {
@@ -78,21 +145,8 @@ namespace MyPostMan.Controllers
             var response = RequestHelper.SendGetRequestAuthGetDel("BankAccount"
             , "GetCreatedByHhId", id, MyToken, CusHttpMethod.Get);
 
-            if (response.IsSuccessStatusCode)
-            {
-                var data = RequestHelper.ReadResponse(response);
-                var model = JsonConvert.DeserializeObject<List<BankAccountViewModel>>(data);
-                return View(model);
-            }
-
-            if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                var model = new List<BankAccountViewModel>();
-
-                return View(model);
-            }
-
-            return View();
+            return GeneralResDealer(response, MyResDealer.regSuccess, MyResDealer.dealBaViewModel, MyResDealer.aList, null,
+                MyResDealer.notFound, MyResDealer.returnBaViewModel, MyResDealer.empty, MyResDealer.empty);
         }
 
         [HttpGet]
@@ -107,31 +161,9 @@ namespace MyPostMan.Controllers
             var response = RequestHelper.SendGetRequestAuthGetDel("BankAccount"
               , "GetAllByHhId", id, MyToken, CusHttpMethod.Get);
 
+            return GeneralResDealer(response, MyResDealer.regSuccess, MyResDealer.dealBaViewModel, MyResDealer.aList, null,
+                MyResDealer.notFound, MyResDealer.returnBaViewModel, MyResDealer.empty, MyResDealer.empty);
 
-            if (response.IsSuccessStatusCode)
-            {
-                var data = RequestHelper.ReadResponse(response);
-                var model = JsonConvert.DeserializeObject<List<BankAccountViewModel>>(data);
-                return View(model);
-            }
-
-
-            if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                var model = new List<BankAccountViewModel>();
-
-                return View(model);
-            }
-
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                ViewBag.Nf = false;
-                return View("NofoundAuth");
-            }
-
-
-
-            return View();
         }
 
 
@@ -161,32 +193,8 @@ namespace MyPostMan.Controllers
             var response = RequestHelper.SendGetRequestAuth(parameters, "BankAccount"
                 , "Create", null, MyToken, CusHttpMethod.Post);
 
-            //var data = RequestHelper.ReadResponse(response);
-
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToAction(nameof(BankAccountController.ShowMine), new { id });
-            }
-
-            if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                ViewBag.Nf = true;
-                return View("NofoundAuth");
-            }
-            else if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                ViewBag.Nf = false;
-                return View("NofoundAuth");
-            }
-            else if (response.StatusCode != HttpStatusCode.BadRequest)
-            {
-                return View("Error");
-            }
-
-            DealBadRequest(response);
-
-            return View();
-
+            return GeneralResDealer(response, MyResDealer.regSuccess, MyResDealer.empty, MyResDealer.single, id,
+                MyResDealer.notFound, MyResDealer.empty, MyResDealer.noAuth, MyResDealer.badResquest);
 
         }
 
@@ -202,20 +210,8 @@ namespace MyPostMan.Controllers
             , "GetByBaId", id, MyToken, CusHttpMethod.Get);
 
 
-            if (response.IsSuccessStatusCode)
-            {
-                var data = RequestHelper.ReadResponse(response);
-                var model = JsonConvert.DeserializeObject<BankAccountBindingModel>(data);
-                return View(model);
-            }
-
-            if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                ViewBag.Nf = true;
-                return View("NofoundAuth");
-            }
-
-            return View();
+            return GeneralResDealer(response, MyResDealer.regSuccess, MyResDealer.dealBaViewModel, MyResDealer.single, null,
+                MyResDealer.notFound, MyResDealer.empty, MyResDealer.empty, MyResDealer.empty);
         }
 
         [HttpPost]
@@ -236,26 +232,8 @@ namespace MyPostMan.Controllers
             var response = RequestHelper.SendGetRequestAuth(parameters, "BankAccount"
                 , "Edit", id, MyToken, CusHttpMethod.Put);
 
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToAction(nameof(BankAccountController.ShowMine), new { id = hhId });
-            }
-
-            if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                ViewBag.Nf = true;
-                return View("NofoundAuth");
-            }
-
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                ViewBag.Nf = false;
-                return View("NofoundAuth");
-            }
-
-            DealBadRequest(response);
-
-            return View();
+            return GeneralResDealer(response, MyResDealer.regSuccess, MyResDealer.empty, MyResDealer.single, hhId,
+                MyResDealer.notFound, MyResDealer.empty, MyResDealer.noAuth, MyResDealer.badResquest);
 
 
         }
@@ -267,25 +245,8 @@ namespace MyPostMan.Controllers
             var response = RequestHelper.SendGetRequestAuthGetDel("BankAccount"
                 , "Delete", id, MyToken, CusHttpMethod.Delete);
 
-
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToAction(nameof(BankAccountController.ShowMine), new { id = hhId });
-            }
-
-            if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                ViewBag.Nf = true;
-                return View("NofoundAuth");
-            }
-
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                ViewBag.Nf = false;
-                return View("NofoundAuth");
-            }
-
-            return View();
+            return GeneralResDealer(response, MyResDealer.regSuccess, MyResDealer.empty, MyResDealer.single, hhId,
+                MyResDealer.notFound, MyResDealer.empty, MyResDealer.noAuth, MyResDealer.empty);
         }
 
         [HttpPost]
@@ -295,25 +256,9 @@ namespace MyPostMan.Controllers
             var response = RequestHelper.SendGetRequestAuthGetDel("BankAccount"
                 , "UpdateBalance", id, MyToken, CusHttpMethod.Put);
 
+            return GeneralResDealer(response, MyResDealer.regSuccess, MyResDealer.empty, MyResDealer.empty, hhId,
+                MyResDealer.notFound, MyResDealer.empty, MyResDealer.noAuth, MyResDealer.empty);
 
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToAction(nameof(BankAccountController.ShowMine), new { id = hhId });
-            }
-
-            if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                ViewBag.Nf = true;
-                return View("NofoundAuth");
-            }
-
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                ViewBag.Nf = false;
-                return View("NofoundAuth");
-            }
-
-            return View();
         }
 
 
