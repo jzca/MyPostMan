@@ -292,12 +292,6 @@ namespace MyPostMan.Controllers
                 return View(overall);
             }
 
-            if (response2.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                ViewBag.Nf = false;
-                return View("NofoundAuth");
-            }
-
             return View("Erro");
         }
 

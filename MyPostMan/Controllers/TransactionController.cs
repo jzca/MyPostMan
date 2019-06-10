@@ -85,35 +85,8 @@ namespace MyPostMan.Controllers
                 return RedirectToAction(nameof(TransactionController.IndexHh));
             }
 
-            var model = new TranscationBindingModel();
+            return FillDropDownListOnCreation(id.Value);
 
-            var responseBa = SendReqGetRes(true, id, "BankAccount", "GetAllByHhId");
-
-            if (responseBa.IsSuccessStatusCode)
-            {
-                model.BankAccounts = MakeNewDropDownList(ReadOutputDropDownList(responseBa));
-            }
-            else if (responseBa.StatusCode == HttpStatusCode.NotFound)
-            {
-                AddTempDataMsg(true);
-                return View("Error");
-            }
-
-            var responseCat = SendReqGetRes(true, id, "Category", "GetAllByHhId");
-
-            if (responseCat.IsSuccessStatusCode)
-            {
-                model.Categories = MakeNewDropDownList(ReadOutputDropDownList(responseCat));
-
-                return View(model);
-            }
-            else if (responseCat.StatusCode == HttpStatusCode.NotFound)
-            {
-                AddTempDataMsg(false);
-                return View("Error");
-            }
-
-            return View("Error");
         }
 
         [HttpPost]
@@ -121,7 +94,7 @@ namespace MyPostMan.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View();
+                return FillDropDownListOnCreation(id);
             }
 
             var title = formData.Title;
@@ -252,6 +225,7 @@ namespace MyPostMan.Controllers
                 if (responseCat.IsSuccessStatusCode)
                 {
                     formData.Categories = MakeNewDropDownList(ReadOutputDropDownList(responseCat));
+                    formData.DateTransacted = DateTime.Today;
                     return View(formData);
                 }
                 else if (responseCat.StatusCode == HttpStatusCode.NotFound)
@@ -523,6 +497,39 @@ namespace MyPostMan.Controllers
         {
             return RequestHelper.SendGetRequestAuthGetDel("Category"
                 , "GetAllByHhBaId", baId, MyToken, CusHttpMethod.Get);
+        }
+
+        private ActionResult FillDropDownListOnCreation(int id)
+        {
+            var model = new TranscationBindingModel();
+
+            var responseBa = SendReqGetRes(true, id, "BankAccount", "GetAllByHhId");
+
+            if (responseBa.IsSuccessStatusCode)
+            {
+                model.BankAccounts = MakeNewDropDownList(ReadOutputDropDownList(responseBa));
+            }
+            else if (responseBa.StatusCode == HttpStatusCode.NotFound)
+            {
+                AddTempDataMsg(true);
+                return View("Error");
+            }
+
+            var responseCat = SendReqGetRes(true, id, "Category", "GetAllByHhId");
+
+            if (responseCat.IsSuccessStatusCode)
+            {
+                model.Categories = MakeNewDropDownList(ReadOutputDropDownList(responseCat));
+
+                return View(model);
+            }
+            else if (responseCat.StatusCode == HttpStatusCode.NotFound)
+            {
+                AddTempDataMsg(false);
+                return View("Error");
+            }
+
+            return View("Error");
         }
 
 
