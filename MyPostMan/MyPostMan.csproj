@@ -148,7 +148,6 @@
     <Compile Include="Models\HttpActionContext.cs" />
     <Compile Include="Models\LogInData.cs" />
     <Compile Include="Models\MsgModelState.cs" />
-    <Compile Include="Models\ResDealer.cs" />
     <Compile Include="Models\ViewModel\BankAccountHouseholdViewModel.cs" />
     <Compile Include="Models\ViewModel\BankAccountViewModel.cs" />
     <Compile Include="Models\ViewModel\BankAccTransDetailViewModel.cs" />
