@@ -215,8 +215,15 @@ namespace MyPostMan.Controllers
             if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
             {
                 var data = RequestHelper.ReadResponse(response);
-                var erroMsg = JsonConvert.DeserializeObject<BadError>(data);
-                ModelState.AddModelError(erroMsg.Name, erroMsg.Message);
+                var erroMsg = JsonConvert.DeserializeObject<MsgModelState>(data);
+                erroMsg.ModelState.ToList().ForEach(p =>
+                {
+                    p.Value.ToList().ForEach(b =>
+                    {
+                        ModelState.AddModelError(string.Empty, $"{b}");
+                    });
+
+                });
             }
 
             return View();
